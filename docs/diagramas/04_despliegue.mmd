@@ -1,0 +1,19 @@
+flowchart LR
+    subgraph PC["Equipo del cliente"]
+        BR["Navegador web"]
+    end
+    subgraph SV["Servidor de aplicación - Procfile: gunicorn src.app:app"]
+        G["Gunicorn"]
+        F["Flask: src.app<br/>MÓDULO MVP Carrito"]
+        P["Pool de conexiones<br/>MYSQL_POOL_SIZE, 10 por defecto"]
+        U["Carpeta static/uploads"]
+        G --> F --> P
+        F --> U
+    end
+    subgraph BD["Servidor MySQL"]
+        M[("Base de datos tienda_flask")]
+    end
+    BR -- "HTTP" --> G
+    P -- "TCP 3306" --> M
+    classDef mvp fill:#DCE6F1,stroke:#2F5597,stroke-width:3px,color:#000
+    class F mvp

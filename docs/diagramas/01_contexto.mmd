@@ -1,0 +1,18 @@
+flowchart LR
+    U(["Cliente<br/>usuario autenticado"])
+    subgraph SIS["Unimarket - tienda_flask"]
+        MVP["MÓDULO MVP<br/>Carrito de Compras<br/>agregar, ver, editar, eliminar,<br/>pagar y consultar órdenes"]
+        DEP["Dependencias del MVP<br/>autenticación, catálogo, LUNA"]
+    end
+    PAS["Pasarela de pago real<br/>fuera del alcance del MVP"]
+    U -- "usa desde el navegador" --> MVP
+    MVP -- "usa sesión y productos" --> DEP
+    MVP -. "no integrada" .-> PAS
+    classDef mvp fill:#DCE6F1,stroke:#2F5597,stroke-width:3px,color:#000
+    classDef dep fill:#F2F2F2,stroke:#808080,color:#000
+    classDef ext fill:#FFFFFF,stroke:#999999,stroke-dasharray:5 5,color:#555
+    classDef per fill:#FFF2CC,stroke:#BF9000,color:#000
+    class MVP mvp
+    class DEP dep
+    class PAS ext
+    class U per

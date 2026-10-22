@@ -1,0 +1,33 @@
+flowchart TB
+    subgraph EXT["Dependencias externas al MVP - src/app.py"]
+        SES["Sesión e inicio de sesión<br/>login, register"]
+        CAT["Catálogo de productos<br/>crear, editar, eliminar"]
+        LUNA["Asistente LUNA"]
+    end
+    subgraph MVP["MÓDULO MVP - Carrito de Compras - src/carrito/"]
+        VIS["Vista del carrito<br/>templates/pedido.html, pedidos_lista.html,<br/>ordenes.html, static/js/pedido.js"]
+        RUT["Rutas del carrito<br/>routes.py"]
+        SRVC["Servicio de carrito<br/>carrito_service.py<br/>reglas: validar, calcular, pagar"]
+        RPED["Repositorio de pedidos<br/>pedidos_repository.py"]
+        RORD["Repositorio de órdenes<br/>ordenes_repository.py"]
+    end
+    CFG["db_config.py<br/>pool de conexiones y transacción"]
+    DB[("MySQL<br/>productos, pedidos, ordenes, detalle_orden")]
+    VIS -- "HTTP / fetch JSON" --> RUT
+    RUT -- "usuario_id de la sesión" --> SES
+    RUT --> SRVC
+    SRVC --> RPED
+    SRVC --> RORD
+    SRVC -- "transaccion al pagar" --> CFG
+    RPED --> CFG
+    RORD --> CFG
+    CFG --> DB
+    RPED -. "lee precio y existencia" .-> CAT
+    classDef mvp fill:#DCE6F1,stroke:#2F5597,stroke-width:2px,color:#000
+    classDef rep fill:#E2EFDA,stroke:#548235,color:#000
+    classDef ext fill:#F2F2F2,stroke:#808080,color:#000
+    classDef db fill:#EAEAEA,stroke:#555,color:#000
+    class VIS,RUT,SRVC mvp
+    class RPED,RORD rep
+    class SES,CAT,LUNA,CFG ext
+    class DB db

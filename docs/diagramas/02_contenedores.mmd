@@ -1,0 +1,20 @@
+flowchart LR
+    U(["Cliente"])
+    subgraph NAV["Navegador web"]
+        FE["Frontend del MVP<br/>pedido.html, pedidos_lista.html,<br/>ordenes.html, pedido.js<br/>Jinja2 + JavaScript"]
+    end
+    subgraph SRV["Servidor de aplicación - Gunicorn"]
+        APP["Aplicación Flask<br/>src/app.py + src/carrito/<br/>MÓDULO MVP: Carrito de Compras"]
+    end
+    DB[("MySQL<br/>usuarios, productos, pedidos,<br/>ordenes, detalle_orden")]
+    FS[("Archivos locales<br/>static/uploads<br/>imágenes de productos")]
+    U --> FE
+    FE -- "HTTP: formularios y fetch JSON" --> APP
+    APP -- "SQL mediante pool de conexiones" --> DB
+    APP -- "lee y guarda imágenes" --> FS
+    classDef mvp fill:#DCE6F1,stroke:#2F5597,stroke-width:3px,color:#000
+    classDef per fill:#FFF2CC,stroke:#BF9000,color:#000
+    classDef db fill:#F2F2F2,stroke:#555,color:#000
+    class APP,FE mvp
+    class U per
+    class DB,FS db
